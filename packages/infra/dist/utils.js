@@ -1,0 +1,76 @@
+// Utility functions for MCP servers
+import { APIManagerForAPIKey, APIManagerForHarmonySASE } from './api-manager.js';
+import { Settings } from './settings.js';
+/**
+ * Server types for API connections
+ */
+export var ServerType;
+(function (ServerType) {
+    ServerType["MANAGEMENT"] = "management";
+    ServerType["HARMONY_SASE"] = "harmony_sase";
+})(ServerType || (ServerType = {}));
+/**
+ * Get an API manager for the specified server type
+ */
+export async function getApiManager(serverType = ServerType.MANAGEMENT) {
+    const settings = Settings.getSettings();
+    if (serverType === ServerType.HARMONY_SASE) {
+        // HarmonySASE requires an API key
+        if (!settings.apiKey) {
+            throw new Error('API key is required for Harmony SASE');
+        }
+        return APIManagerForHarmonySASE.create({
+            api_key: settings.apiKey,
+            management_host: settings.managementHost,
+            origin: settings.origin,
+        });
+    }
+    if (settings.s1cUrl) {
+        console.error('Using S1C With API Key from settings');
+        return APIManagerForAPIKey.create({
+            api_key: settings.apiKey,
+            s1c_url: settings.s1cUrl,
+        });
+    }
+    if (settings.managementHost) {
+        console.error('Using on prem management host and port from settings');
+        // Check what authentication method is available
+        if (settings.apiKey) {
+            console.error('Authenticating with API key');
+            return APIManagerForAPIKey.create({
+                api_key: settings.apiKey,
+                management_host: settings.managementHost,
+                management_port: settings.managementPort || '443',
+            });
+        }
+        else if (settings.username && settings.password) {
+            console.error('Authenticating with username/password');
+            return APIManagerForAPIKey.create({
+                username: settings.username,
+                password: settings.password,
+                management_host: settings.managementHost,
+                management_port: settings.managementPort || '443',
+            });
+        }
+        else {
+            throw new Error('Missing authentication credentials. Provide either API key or username/password for on-prem management.');
+        }
+    }
+    throw new Error('Missing tenant details.');
+}
+/**
+ * Call the management API
+ */
+export async function callManagementApi(method = 'POST', uri = '', params = {}) {
+    const s1cManager = await getApiManager();
+    const data = {};
+    // Convert snake_case to kebab-case for API parameters
+    for (const [key, value] of Object.entries(params)) {
+        if (value === null || value === '') {
+            continue;
+        }
+        const safeKey = key.replace(/_/g, '-');
+        data[safeKey] = value;
+    }
+    return await s1cManager.callApi(method, uri, data);
+}
