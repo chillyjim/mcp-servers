@@ -1,0 +1,11 @@
+# build it with command
+#   docker build -f ./Dockerfile_base -t gitlab.locsec.net:4567/mtp-dev/console-one-frontend/base:master -t gitlab.locsec.net:4567/mtp-dev/console-one-frontend/base:latest --platform linux/amd64 .
+#
+FROM node:18
+
+WORKDIR /home/jenkins/app
+
+COPY package.json /home/jenkins/app/
+
+RUN npm install
+

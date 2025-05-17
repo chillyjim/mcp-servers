@@ -1,0 +1,40 @@
+{
+  "name": "@chkp/genai-mcp-root",
+  "version": "1.0.0",
+  "description": "Monorepo for Check Point MCP servers",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "clean": "find ./packages -type d -name dist -exec rm -rf {} + && rm -rf ./dist && find . -name 'tsconfig.tsbuildinfo' -delete",
+    "build": "tsc --build",
+    "dev": "npm run dev --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "build:all": "npm run clean && tsc --build",
+    "build-debug": "tsc -p tsconfig.debug.json",
+    "debug-api": "node scripts/debug-api.js",
+    "debug-harmony": "node scripts/debug-harmony.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.11.4",
+    "body-parser": "^1.20.2",
+    "commander": "^13.1.0",
+    "express": "^4.18.2",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.15.11",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
