@@ -8,7 +8,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "composite": true
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": "."
   },
   "references": [
     { "path": "./packages/infra" },
