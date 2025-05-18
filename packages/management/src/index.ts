@@ -518,19 +518,19 @@ server.tool(
     filter: z.string().optional().default(''),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     show_membership: z.boolean().optional().default(false),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const show_membership = typeof args.show_membership === 'boolean' ? args.show_membership : false;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset, 'show-membership': show_membership };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -548,17 +548,17 @@ server.tool(
     filter: z.string().optional().default(''),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -597,17 +597,17 @@ server.tool(
     filter: z.string().optional().default(''),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -646,17 +646,17 @@ server.tool(
     filter: z.string().optional().default(''),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -695,17 +695,17 @@ server.tool(
     filter: z.string().optional().default(''),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -744,23 +744,23 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     show_as_ranges: z.boolean().optional().default(false),
     dereference_group_members: z.boolean().optional().default(false),
     show_membership: z.boolean().optional().default(false),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const show_as_ranges = typeof args.show_as_ranges === 'boolean' ? args.show_as_ranges : false;
     const dereference_group_members = typeof args.dereference_group_members === 'boolean' ? args.dereference_group_members : false;
     const show_membership = typeof args.show_membership === 'boolean' ? args.show_membership : false;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = {
       limit, offset, 'show-as-ranges': show_as_ranges, 'dereference-group-members': dereference_group_members, 'show-membership': show_membership
     };
@@ -780,19 +780,19 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     show_membership: z.boolean().optional().default(false),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const show_membership = typeof args.show_membership === 'boolean' ? args.show_membership : false;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset, 'show-membership': show_membership };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -810,19 +810,19 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     show_membership: z.boolean().optional().default(false),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const show_membership = typeof args.show_membership === 'boolean' ? args.show_membership : false;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset, 'show-membership': show_membership };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -840,21 +840,21 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     dereference_members: z.boolean().optional().default(false),
     show_membership: z.boolean().optional().default(false),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const dereference_members = typeof args.dereference_members === 'boolean' ? args.dereference_members : false;
     const show_membership = typeof args.show_membership === 'boolean' ? args.show_membership : false;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset, 'dereference-members': dereference_members, 'show-membership': show_membership };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -872,19 +872,19 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     show_membership: z.boolean().optional().default(false),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const show_membership = typeof args.show_membership === 'boolean' ? args.show_membership : false;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset, 'show-membership': show_membership };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -902,17 +902,17 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -931,17 +931,17 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -960,17 +960,17 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -989,17 +989,17 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -1018,17 +1018,17 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -1046,17 +1046,17 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -1075,19 +1075,19 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     show_membership: z.boolean().optional().default(false),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const show_membership = typeof args.show_membership === 'boolean' ? args.show_membership : false;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset, 'show-membership': show_membership };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -1105,19 +1105,19 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     show_membership: z.boolean().optional().default(false),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const show_membership = typeof args.show_membership === 'boolean' ? args.show_membership : false;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset, 'show-membership': show_membership };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -1136,23 +1136,23 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     show_as_ranges: z.boolean().optional().default(false),
     dereference_members: z.boolean().optional().default(false),
     show_membership: z.boolean().optional().default(false),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const show_as_ranges = typeof args.show_as_ranges === 'boolean' ? args.show_as_ranges : false;
     const dereference_members = typeof args.dereference_members === 'boolean' ? args.dereference_members : false;
     const show_membership = typeof args.show_membership === 'boolean' ? args.show_membership : false;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = {
       limit, offset, 'show-as-ranges': show_as_ranges, 'dereference-members': dereference_members, 'show-membership': show_membership
     };
@@ -1172,17 +1172,17 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -1201,17 +1201,17 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -1230,17 +1230,17 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -1259,17 +1259,17 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
@@ -1287,17 +1287,17 @@ server.tool(
     filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
-    order: z.array(z.any()).optional(),
+    order: z.array(z.string()).optional(),
     details_level: z.string().optional(),
-    domains_to_process: z.array(z.any()).optional(),
+    domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
     const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
-    const order = Array.isArray(args.order) ? args.order as any[] : undefined;
+    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as any[] : undefined;
+    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
     const params: Record<string, any> = { limit, offset };
     if (filter) params.filter = filter;
     if (order) params.order = order;
