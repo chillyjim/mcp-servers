@@ -1,5 +1,5 @@
 {
-  "name": "@chkp/genai-mcp-root",
+  "name": "@chkp/quantum-root",
   "version": "1.0.0",
   "description": "Monorepo for Check Point MCP servers",
   "private": true,

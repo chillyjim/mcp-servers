@@ -1,23 +1,44 @@
-name: Publish Package to npmjs
+name: Publish Packages to npmjs
 on:
   release:
     types: [published]
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # Setup .npmrc file to publish to npm
+
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
-          scope: '@octocat'
-      - name: Publish SDK
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set version from tag in infra
         run: |
-          export BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          export BUILD_JOB_ID=$GITHUB_RUN_ID
-          npm install
+          cd packages/infra
+          npm version patch
+
+      - name: Set version from tag in management
+        run: |
+          cd packages/management
+          npm version patch
+
+      - name: Build packages
+        run: npm run build
+
+      - name: Publish infra package
+        run: |
+          cd packages/infra
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish management package
+        run: |
+          cd packages/management
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
