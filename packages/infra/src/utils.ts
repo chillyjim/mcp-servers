@@ -1,6 +1,7 @@
 // Utility functions for MCP servers
 import { APIManagerBase, APIManagerForAPIKey } from './api-manager.js';
 import { Settings } from './settings.js';
+import { nullOrEmpty } from './string-utils.js';
 
 /**
  * Get an API manager according to the management settings
@@ -8,25 +9,24 @@ import { Settings } from './settings.js';
 export async function getApiManager(): Promise<APIManagerBase> {
   const settings = Settings.getSettings();
 
-  if (settings.s1cUrl) {
-    console.error('Using S1C With API Key from settings');
+  if (!nullOrEmpty(settings.s1cUrl)) {
+    console.error('Using Smart One Cloud');
     return APIManagerForAPIKey.create({
       api_key: settings.apiKey,
       s1c_url: settings.s1cUrl,
     });
   }
-    if (settings.managementHost) {
-    console.error('Using on prem management host and port from settings');
+  if (!nullOrEmpty(settings.managementHost)) {
     // Check what authentication method is available
-    if (settings.apiKey) {
-      console.error('Authenticating with API key');
+    if (!nullOrEmpty(settings.apiKey)) {
+      console.error('Using on prem management with API key');
       return APIManagerForAPIKey.create({
         api_key: settings.apiKey,
         management_host: settings.managementHost,
         management_port: settings.managementPort || '443',
       });
-    } else if (settings.username && settings.password) {
-      console.error('Authenticating with username/password');
+    } else if (!nullOrEmpty(settings.username) && !nullOrEmpty(settings.password)) {
+      console.error('Using on prem management with username/password');
       return APIManagerForAPIKey.create({
         username: settings.username,
         password: settings.password,
@@ -37,7 +37,7 @@ export async function getApiManager(): Promise<APIManagerBase> {
       throw new Error('Missing authentication credentials. Provide either API key or username/password for on-prem management.');
     }
   }
-  
+
   throw new Error('Missing tenant details.');
 }
 

@@ -9,9 +9,6 @@ function getMainPackageUserAgent(): string {
   return "Check Point MCP API Client/v1.0";
 }
 
-// Constants for API URLs
-export const ON_PREM_CI_BASE_URL = "{}/{}/api/v2/environments/{}/web_api";
-
 /**
  * Response from an API client call
  */
@@ -26,11 +23,20 @@ export class ClientResponse {
  * Base class for API clients
  */
 export abstract class APIClientBase {
+  private static _instance: APIClientBase;
   protected sid: string | null = null;
+  protected sessionTimeout: number | null = null; // in seconds
+  protected sessionStart: number | null = null;   // timestamp when session was created
+
   
   constructor(
     protected readonly apiKey: string,
-  ) {}
+  ) {
+    if (APIClientBase._instance) {
+      return APIClientBase._instance;
+    }
+    APIClientBase._instance = this;
+  }
 
   /**
    * Get the host URL for the API client
@@ -63,10 +69,11 @@ export abstract class APIClientBase {
     data: Record<string, any>,
     params?: Record<string, any>
   ): Promise<ClientResponse> {
-    if (!this.sid) {
-      this.sid = await this.loginWithApiKey();
+
+    if (!this.sid || this.isSessionExpired()) {
+      this.sid = await this.login();
     }
-    
+
     return await APIClientBase.makeRequest(
       this.getHost(),
       method,
@@ -78,11 +85,19 @@ export abstract class APIClientBase {
   }
 
   /**
+   * Check if the session is expired based on sessionTimeout and sessionStart
+   */
+  protected isSessionExpired(): boolean {
+    if (!this.sid || !this.sessionTimeout || !this.sessionStart) return true;
+    const now = Date.now();
+    // Add a small buffer (5 seconds) to avoid edge cases
+    return now > (this.sessionStart + (this.sessionTimeout - 5) * 1000);
+  }
+
+  /**
    * Login to the API using the API key
    */
-  async loginWithApiKey(): Promise<string> {
-    console.error("Logging in with API key");
-    
+  async login(): Promise<string> {
     const loginResp = await APIClientBase.makeRequest(
       this.getHost(),
       "POST",
@@ -90,6 +105,9 @@ export abstract class APIClientBase {
       { "api-key": this.apiKey },
       { "Content-Type": "application/json" }
     );
+
+    this.sessionTimeout = loginResp.response["session-timeout"] || null;
+    this.sessionStart = Date.now();
     
     return loginResp.response.sid;
   }
@@ -124,33 +142,14 @@ export abstract class APIClientBase {
     if (method.toUpperCase() !== 'GET' && data !== undefined) {
       config.data = data;
     }
-    
-    // Get settings to check if verbose mode is enabled
-    const settings = (globalThis as any).cpMcpSettings as import('./settings').Settings | undefined;
-    const verbose = settings?.verbose || false;
-    
-    // Always log the URL for our debug API
-    if (verbose) {
-      console.error(`🌐 API Request: ${method} ${url}`);
-      console.error('Headers: ' + JSON.stringify(headers));
-      console.error('Params: ' + JSON.stringify(params));
-      console.error('Data: ' + JSON.stringify(data));
-    } else {
-      console.error(`🌐 API Request: ${method} ${url}`);
-    }
+
+    console.error(`API Request: ${method} ${url}`);
 
     try {
       const response = await axios(config);
-      
-      if (verbose) {
-        console.error(`✅ API Response (${response.status}):`);
-        console.error('Headers: ' + JSON.stringify(response.headers));
-        console.error('Data: ' + JSON.stringify(response.data));
-      }
-      
       return new ClientResponse(response.status, response.data as Record<string, any>);
     } catch (error: any) {
-      if (verbose && error.response) {
+      if (error.response) {
         console.error(`❌ API Error (${error.response.status}):`);
         console.error('Headers:', error.response.headers);
         console.error('Data:', error.response.data);
@@ -215,8 +214,8 @@ export class OnPremAPIClient extends APIClientBase {
     data: Record<string, any>,
     params?: Record<string, any>
   ): Promise<ClientResponse> {
-    if (!this.sid) {
-      this.sid = await this.loginWithApiKey();
+    if (!this.sid || this.isSessionExpired()) {
+      this.sid = await this.login();
     }
     
     // Allow self-signed certs for on-prem management servers
@@ -237,7 +236,7 @@ export class OnPremAPIClient extends APIClientBase {
    * Override loginWithApiKey to support both api-key and username/password authentication
    * and allow self-signed certificates
    */
-  async loginWithApiKey(): Promise<string> {
+  async login(): Promise<string> {
     // Determine if we're using API key or username/password
     const isUsingApiKey = !!this.apiKey;
     const isUsingCredentials = !!(this.username && this.password);
@@ -245,14 +244,7 @@ export class OnPremAPIClient extends APIClientBase {
     if (!isUsingApiKey && !isUsingCredentials) {
       throw new Error("Authentication failed: No API key or username/password provided");
     }
-    
-    // Log authentication method
-    if (isUsingApiKey) {
-      console.error("Logging in with API key (allowing self-signed certificates)");
-    } else {
-      console.error("Logging in with username/password (allowing self-signed certificates)");
-    }
-    
+
     // Allow self-signed certs for on-prem management servers
     const httpsAgent = new https.Agent({ rejectUnauthorized: false });
     
@@ -270,7 +262,11 @@ export class OnPremAPIClient extends APIClientBase {
       null,
       httpsAgent
     );
-    
+
+    this.sessionTimeout = loginResp.response["session-timeout"] || null;
+    this.sessionStart = Date.now();
+    this.sid = loginResp.response.sid;
+
     return loginResp.response.sid;
   }
 }

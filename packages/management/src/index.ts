@@ -1362,7 +1362,7 @@ const options = program.opts();
 Settings.setSettings(Settings.fromArgs(options));
 const transport = new StdioServerTransport();
 await server.connect(transport);
-console.error('Access MCP server running on stdio');
+console.error('Management MCP server running on stdio. Version:', pkg.version);
 };
 main().catch((error) => {
 console.error('Fatal error in main():', error);

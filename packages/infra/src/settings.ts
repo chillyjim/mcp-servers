@@ -1,5 +1,6 @@
 // Settings manager for MCP servers
-import * as z from 'zod';
+
+import { nullOrEmpty } from './string-utils.js';
 
 // Singleton instance for settings
 let globalSettings: Settings | null = null;
@@ -64,25 +65,31 @@ export class Settings {
     this.managementPort = managementPort;
     this.origin = origin;
     this.verbose = verbose;
-    
+
     this.validate();
   }
   /**
    * Validate the settings
    */
+
+  
   private validate(): void {
     // For S1C, API key is required
-    if (this.s1cUrl && !this.apiKey) {
+    if (!nullOrEmpty(this.s1cUrl) && nullOrEmpty(this.apiKey)) {
       throw new Error('API key is required for S1C (via --api-key or API_KEY env var)');
     }
 
     // For on-prem, either API key or username/password is required
-    if (this.managementHost && !this.apiKey && !(this.username && this.password)) {
+    if (
+      !nullOrEmpty(this.managementHost) &&
+      nullOrEmpty(this.apiKey) &&
+      (nullOrEmpty(this.username) || nullOrEmpty(this.password))
+    ) {
       throw new Error('Either API key or username/password are required for on-prem management (via CLI args or env vars)');
     }
 
     // Need either management URL or management host
-    if (!this.s1cUrl && !this.managementHost) {
+    if (nullOrEmpty(this.s1cUrl) && nullOrEmpty(this.managementHost)) {
       // This validation is commented out in the Python code, so we'll do the same
       // throw new Error(
       //   'You must provide either management URL (cloud) or management host (on-prem) via CLI or env vars'
