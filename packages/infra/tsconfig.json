@@ -6,7 +6,7 @@
     "declaration": true,
     "declarationMap": true,
     "strict": true,
-    "outDir": "./dist",
+    "outDir": "dist",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
