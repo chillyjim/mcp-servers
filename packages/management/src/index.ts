@@ -6,7 +6,15 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { callManagementApi } from '@chkp/genai-mcp-server-infra';
 import { Settings } from '@chkp/genai-mcp-server-infra';
 import { Command } from 'commander';
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
+const pkg = JSON.parse(
+  readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../package.json'), 'utf-8')
+);
+
+process.env.CP_MCP_MAIN_PKG = `${pkg.name} v${pkg.version}`;
 
 const server = new McpServer({ name: 'Check Point Quantum Management' ,
     description:
@@ -1330,18 +1338,6 @@ server.tool(
   }
 );
 
-server.tool(
-  "show_time_objects",
-  "Show all time objects",
-  {},
-  async () => {
-    const result = await callManagementApi("GET", "/web_api/show-times", {});
-    return {
-      content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
-    };
-  }
-);
-
 export { server };
 
 // Access entrypoint
@@ -1372,7 +1368,3 @@ main().catch((error) => {
 console.error('Fatal error in main():', error);
 process.exit(1);
 });
-// }
-// else {
-//   console.error('This module is not intended to be run directly. Please use the provided entrypoint.');
-// }

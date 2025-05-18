@@ -1,5 +1,5 @@
 // API manager implementation for Check Point MCP servers
-import { APIClientBase, ClientResponse, SmartOneCloudAPIClient, OnPremAPIClient, HarmonySaseAPIClient } from './api-client.js';
+import { APIClientBase, SmartOneCloudAPIClient, OnPremAPIClient } from './api-client.js';
 
 /**
  * Base class for API managers
@@ -127,19 +127,3 @@ export class APIManagerForAPIKey extends APIManagerBase {
   }
 }
 
-/**
- * API manager for Harmony SASE
- */
-export class APIManagerForHarmonySASE extends APIManagerBase {
-  static override create(args: {
-    api_key: string;
-    management_host: string;
-    origin: string;
-  }): APIManagerForHarmonySASE {
-    return new this(HarmonySaseAPIClient.create(
-      args.api_key,
-      args.management_host,
-      args.origin
-    ));
-  }
-}
