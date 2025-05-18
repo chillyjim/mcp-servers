@@ -2,6 +2,13 @@
 import axios from 'axios';
 import https from 'https';
 
+function getMainPackageUserAgent(): string {
+  if (process.env.CP_MCP_MAIN_PKG) {
+    return process.env.CP_MCP_MAIN_PKG;
+  }
+  return "Check Point MCP API Client/v1.0";
+}
+
 // Constants for API URLs
 export const ON_PREM_CI_BASE_URL = "{}/{}/api/v2/environments/{}/web_api";
 
@@ -42,7 +49,8 @@ export abstract class APIClientBase {
   protected getHeaders(): Record<string, string> {
     return {
       "Content-Type": "application/json", 
-      "X-chkp-sid": this.sid || ""
+      "X-chkp-sid": this.sid || "",
+      "User-Agent": getMainPackageUserAgent(),
     };
   }
 
@@ -264,56 +272,5 @@ export class OnPremAPIClient extends APIClientBase {
     );
     
     return loginResp.response.sid;
-  }
-}
-
-/**
- * API client for Harmony SASE
- */
-export class HarmonySaseAPIClient extends APIClientBase {
-  constructor(
-    apiKey: string,
-    private readonly managementHost: string,
-    private readonly origin: string
-  ) {
-    super(apiKey);
-  }
-
-  getHost(): string {
-    return this.managementHost;
-  }
-  
-  /**
-   * Override the login method for Harmony SASE
-   */
-  override async loginWithApiKey(): Promise<string> {
-    console.error("Logging in to Harmony SASE with API key");
-    
-    const loginResp = await APIClientBase.makeRequest(
-      this.getHost(),
-      "POST",
-      "v1/auth/authorize",
-      { 
-        apiKey: this.apiKey, 
-        grantType: "api_key" 
-      },
-      {
-        "Content-Type": "application/json",
-        "accept": "application/json"
-      }
-    );
-    
-    return loginResp.response.data.accessToken;
-  }
-  
-  /**
-   * Override the headers method for Harmony SASE
-   */
-  protected override getHeaders(): Record<string, string> {
-    return {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${this.sid}`,
-      "Origin": this.origin
-    };
   }
 }

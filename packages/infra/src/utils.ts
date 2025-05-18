@@ -1,34 +1,12 @@
 // Utility functions for MCP servers
-import { APIManagerBase, APIManagerForAPIKey, APIManagerForHarmonySASE } from './api-manager.js';
+import { APIManagerBase, APIManagerForAPIKey } from './api-manager.js';
 import { Settings } from './settings.js';
 
 /**
- * Server types for API connections
+ * Get an API manager according to the management settings
  */
-export enum ServerType {
-  MANAGEMENT = 'management',
-  HARMONY_SASE = 'harmony_sase'
-}
-
-/**
- * Get an API manager for the specified server type
- */
-export async function getApiManager(
-  serverType: ServerType = ServerType.MANAGEMENT
-): Promise<APIManagerBase> {
+export async function getApiManager(): Promise<APIManagerBase> {
   const settings = Settings.getSettings();
-    if (serverType === ServerType.HARMONY_SASE) {
-    // HarmonySASE requires an API key
-    if (!settings.apiKey) {
-      throw new Error('API key is required for Harmony SASE');
-    }
-    
-    return APIManagerForHarmonySASE.create({
-      api_key: settings.apiKey,
-      management_host: settings.managementHost!,
-      origin: settings.origin!,
-    });
-  }
 
   if (settings.s1cUrl) {
     console.error('Using S1C With API Key from settings');
