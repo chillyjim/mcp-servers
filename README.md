@@ -156,7 +156,7 @@ Add the server configuration:
 
 ### Prerequisites
 
-- Node.js 18+  
+- Node.js 22+  
 - npm 8+  
 
 ### Setup
