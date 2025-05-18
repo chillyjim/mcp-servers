@@ -2,7 +2,7 @@
   "name": "@chkp/quantum-management-mcp",
   "version": "1.0.16",
   "bin": {
-    "genai-mcp-server-management": "dist/index.js"
+    "quantum-management-mcp": "dist/index.js"
   },
   "description": "Official MCP server for Check Point Quantum Management",
   "type": "module",
