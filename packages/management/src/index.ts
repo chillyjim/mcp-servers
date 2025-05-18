@@ -3,8 +3,8 @@
 import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { callManagementApi } from '@chkp/genai-mcp-server-infra';
-import { Settings } from '@chkp/genai-mcp-server-infra';
+import { callManagementApi } from '@chkp/quantum-infra';
+import { Settings } from '@chkp/quantum-infra';
 import { Command } from 'commander';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';

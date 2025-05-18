@@ -1,1 +1,1 @@
-declare module '@chkp/genai-mcp-server-infra';
+declare module '@chkp/quantum-infra';

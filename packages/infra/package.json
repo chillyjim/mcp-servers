@@ -1,7 +1,7 @@
 {
-  "name": "@chkp/genai-mcp-server-infra",
+  "name": "@chkp/quantum-infra",
   "version": "1.0.0",
-  "description": "Shared infrastructure for Check Point MCP servers",
+  "description": "Shared infrastructure for Check Point Quantum Management MCP servers",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
