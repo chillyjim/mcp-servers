@@ -38,6 +38,7 @@ jobs:
       - name: Publish infra package
         run: |
           cd packages/infra
+          npm unpublish @chkp/quantum-infra@1.0.1 --force
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
