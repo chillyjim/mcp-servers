@@ -10,9 +10,9 @@ The Model Context Protocol (MCP) is a standardized interface that allows AI agen
 
 ## Demo
 
-<!-- Place a link or embed for a demo video here -->
+[Watch the demo video](https://youtu.be/QKBcD_99W3s)
 
-## Use Cases
+## Example Use Cases
 
 ### Ensure regulatory compliance with industry standards  
 Prompt: Check if my gateway configuration meets PCI-DSS/HIPAA/GDPR requirements.
@@ -21,10 +21,10 @@ Prompt: Check if my gateway configuration meets PCI-DSS/HIPAA/GDPR requirements.
 Prompt: List all firewall rules that allow traffic from any source to any destination on any port. Highlight rules that are disabled or unused.
 
 ### Source → Destination Path Analysis  
-Prompt: Can you check in my policy if a HOST or Network can access the internet?
+Prompt: Can you check in my policy if a host or network can access the internet?
 
 ### Recommendation for rulebase optimization  
-Prompt: Take a look at the internet-facing rules in my policy and suggest improvements. Identify if there are any rules that should be strengthened or loosened. Consider both security risks and administrative overhead. In your recommendations, refer only to specific rules that can be changed or suggest adding new ones.
+Prompt: Take a look at the internet-facing rules in my policy and suggest improvements. Identify any rules that should be strengthened or loosened. Consider both security risks and administrative overhead. In your recommendations, refer only to specific rules that can be changed or suggest adding new ones.
 
 ### Custom policy visualizations  
 Prompt: Please create a visual report that shows which services are allowed in my network, under which conditions, and which services are strictly blocked.
@@ -42,7 +42,7 @@ Authenticate to Check Point Smart-1 Cloud using an API key.
 - **How to generate an API key:**  
   In your Smart-1 Cloud dashboard, go to **Settings → API & SmartConsole** and generate an API key.  
   Copy the key and the server login URL (excluding the `/login` suffix) to your client settings.  
-  ![alt text](s1c_api_key.png)
+  ![alt text](./resources/s1c_api_key.png)
 
 Set the following environment variables:
 
@@ -74,8 +74,23 @@ Set the following environment variables:
 
 ## Client Configuration
 
-This server can be used with Claude Desktop, Cursor, GitHub Copilot MCP integrations, or any other MCP client.  
-> Note: Due to the nature of management API calls, using this server may require a paid subscription to the model provider to handle token limits and context windows.
+### Prerequisites
+
+Download and install the latest version of [Node.js](https://nodejs.org/en/download/) if you don't already have it installed.  
+You can check your installed version by running:
+
+```bash
+node -v      # Should print "v22" or higher
+nvm current  # Should print "v22" or higher
+```
+
+### Supported Clients
+
+This server has been tested with Claude Desktop, Cursor, GitHub Copilot, and Windsurf clients.  
+It is expected to work with any MCP client that supports the Model Context Protocol.
+
+> **Note:** Due to the nature of management API calls and the variety of server tools, using this server may require a paid subscription to the model provider to support token limits and context window sizes.  
+> For smaller models, you can reduce token usage by limiting the number of enabled tools in the client.
 
 ### Smart-1 Cloud Example
 
@@ -114,7 +129,7 @@ This server can be used with Claude Desktop, Cursor, GitHub Copilot MCP integrat
 }
 ```
 
-> Set only the environment variables required for your authentication method (see above).
+> Set only the environment variables required for your authentication method.
 
 ### Configuring the Claude Desktop App
 
@@ -150,6 +165,48 @@ Add the server configuration:
 }
 ```
 
+### VSCode 
+
+Enter VSCode settings and type "mcp" in the search bar.
+You should see the option to edit the configuration file.
+Add this configuration:
+
+```json
+{
+  ...
+  "mcp": {
+    "inputs": [],
+    "servers": {
+      "quantum-management": {
+        "command": "npx",
+        "args": [
+          "@chkp/quantum_management_mcp"
+        ],
+        "env": {
+          "MANAGEMENT_HOST": "YOUR_MANAGEMENT_IP_OR_HOST_NAME",
+          "MANAGEMENT_PORT": "443",  // optional, default is 443
+          "API_KEY": "YOUR_API_KEY", // or use USERNAME and PASSWORD
+          "USERNAME": "YOUR_USERNAME", // optional
+          "PASSWORD": "YOUR_PASSWORD" // optional
+        }
+      }
+    }
+  },
+  ...
+}
+```
+
+### Windsurf
+
+Enter Windsurf settings and type "mcp" in the search bar.
+You should see the option to edit the configuration file.
+Add the configuration as Claude Desktop App.
+
+### Cursor
+
+Enter Cursor settings and click on "MCP Servers" in the left menu.
+You should see the option to add a new MCP Server.
+Add the configuration as Claude Desktop App.
 ---
 
 ## Development
@@ -157,7 +214,7 @@ Add the server configuration:
 ### Prerequisites
 
 - Node.js 22+  
-- npm 8+  
+- npm 10+  
 
 ### Setup
 
@@ -175,7 +232,7 @@ npm run build
 
 ### Running Locally
 
-Run the server locally for development using [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) or any MCP client.
+You can run the server locally for development using [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) or any compatible MCP client.
 
 ```bash
 node FULL_PATH_TO_SERVER/packages/management/dist/index.js --s1c-url|--management-host --api-key|--username|--password
@@ -187,4 +244,4 @@ node FULL_PATH_TO_SERVER/packages/management/dist/index.js --s1c-url|--managemen
 
 1. **Authentication keys and credentials are never shared with the model.** They are used only by the MCP server to authenticate with your Check Point management system.  
 2. **Only use client implementations you trust.** Malicious or untrusted clients could misuse your credentials or access data improperly.  
-3. **Management data is exposed to the model.** Use models and providers that comply with your organization’s policies on sensitive data and PII handling.
+3. **Management data is exposed to the model.** Ensure that you only use models and providers that comply with your organization’s policies for handling sensitive data and PII.
