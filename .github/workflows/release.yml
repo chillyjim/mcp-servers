@@ -10,7 +10,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
@@ -38,7 +38,6 @@ jobs:
       - name: Publish infra package
         run: |
           cd packages/infra
-          npm unpublish @chkp/quantum-infra@1.0.1 --force
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
