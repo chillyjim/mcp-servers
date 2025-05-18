@@ -1,9 +1,6 @@
 {
   "name": "@chkp/quantum-management-mcp",
   "version": "1.0.16",
-  "publishConfig": {
-    "registry": "https://artifactory-npm/artifactory/api/npm/npm/"
-  },
   "bin": {
     "genai-mcp-server-management": "dist/index.js"
   },

@@ -1,5 +1,5 @@
 ARG FROM_BRANCH=latest
-FROM node:18
+FROM node:22
 
 WORKDIR /home/jenkins/app
 
