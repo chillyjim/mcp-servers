@@ -10,7 +10,7 @@ The Model Context Protocol (MCP) is a standardized interface that allows AI agen
 
 ## Demo
 
-[![Watch the demo video]](https://youtu.be/QKBcD_99W3s)
+[![Watch the demo](https://img.youtube.com/vi/QKBcD_99W3s/0.jpg)](https://www.youtube.com/watch?v=QKBcD_99W3s)
 
 ## Example Use Cases
 
