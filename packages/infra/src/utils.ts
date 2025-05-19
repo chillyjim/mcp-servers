@@ -45,19 +45,21 @@ export async function getApiManager(): Promise<APIManagerBase> {
  * Call the management API
  */
 export async function callManagementApi(
-  method: string = 'POST',
-  uri: string = '',
-  params: Record<string, any> = {}
-): Promise<Record<string, any>> {
+  method: string = "POST", 
+  uri: string = "", 
+  kwargs: Record<string, any> = {}
+): Promise<any> {
   const s1cManager = await getApiManager();
   const data: Record<string, any> = {};
   
-  // Convert snake_case to kebab-case for API parameters
-  for (const [key, value] of Object.entries(params)) {
-    if (value === null || value === '') {
+  for (const [key, value] of Object.entries(kwargs)) {
+    // Skip null, undefined, empty strings, and empty arrays
+    if (value === null || value === undefined || value === "" || 
+        (Array.isArray(value) && value.length === 0)) {
       continue;
     }
-    const safeKey = key.replace(/_/g, '-');
+    
+    const safeKey = key.replace(/_/g, "-");
     data[safeKey] = value;
   }
 
