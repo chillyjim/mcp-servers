@@ -110,7 +110,7 @@ It is expected to work with any MCP client that supports the Model Context Proto
   "mcpServers": {
     "quantum-management": {
       "command": "npx",
-      "args": ["@chkp/quantum_management_mcp"],
+      "args": ["@chkp/quantum-management-mcp"],
       "env": {
         "API_KEY": "YOUR_API_KEY",
         "S1C_URL": "YOUR_S1C_URL" // e.g., https://xxxxxxxx.maas.checkpoint.com/yyyyyyy/web_api
@@ -127,7 +127,7 @@ It is expected to work with any MCP client that supports the Model Context Proto
   "mcpServers": {
     "quantum-management": {
       "command": "npx",
-      "args": ["@chkp/quantum_management_mcp"],
+      "args": ["@chkp/quantum-management-mcp"],
       "env": {
         "MANAGEMENT_HOST": "YOUR_MANAGEMENT_IP_OR_HOST_NAME",
         "MANAGEMENT_PORT": "443", // optional, default is 443
@@ -167,7 +167,7 @@ Add the server configuration:
   "mcpServers": {
     "quantum-management": {
       "command": "npx",
-      "args": ["@chkp/quantum_management_mcp"],
+      "args": ["@chkp/quantum-management-mcp"],
       "env": {
         // Add the configuration from the above instructions
       }
@@ -191,7 +191,7 @@ Add this configuration:
       "quantum-management": {
         "command": "npx",
         "args": [
-          "@chkp/quantum_management_mcp"
+          "@chkp/quantum-management-mcp"
         ],
         "env": {
           "MANAGEMENT_HOST": "YOUR_MANAGEMENT_IP_OR_HOST_NAME",
