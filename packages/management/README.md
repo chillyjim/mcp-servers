@@ -2,10 +2,17 @@
 
 ## What is MCP?
 
-The Model Context Protocol (MCP) is a standardized interface that allows AI agents and automation tools to interact programmatically with Check Point Quantum Management servers. Using MCP, you can:
+Model Context Protocol (MCP) servers expose a structured, machine-readable API for your enterprise data—designed for AI-powered automation, copilots, and decision engines. By delivering a clear, contextual slice of your security environment, MCP lets you query, analyze, and optimize complex systems without building custom SDKs or parsing raw exports.
+
+## Why MCP for Security?
+ 
+Security Policies often span hundreds of rules and thousands of objects across diverse enforcement points. Understanding, auditing, or optimizing these environments is slow and error-prone. 
+MCP changes this: exposing security management data in a modular, context-rich format, ready for AI systems to consume. Enabling the AI to use your data with precision. Ask real-world questions, and get structured, actionable answers—instantly.
+
+## Features
 
 - Query and visualize installed policies, rulebases, and network topology
-- Retrieve and analyze access, NAT, and threat prevention rules
+- Retrieve and analyze access, NAT and VPN rules
 - List and inspect objects such as hosts, networks, services, VPN communities, and more
 
 ## Demo
@@ -14,21 +21,25 @@ The Model Context Protocol (MCP) is a standardized interface that allows AI agen
 
 ## Example Use Cases
 
-### Ensure regulatory compliance with industry standards  
-Prompt: Check if my gateway configuration meets PCI-DSS/HIPAA/GDPR requirements.
+### Regulatory Compliance Checks
+“Do my current gateways meet PCI-DSS, HIPAA, or GDPR standards?”  
+*→ Returns a detailed gap analysis across your policy layers.*
 
-### Find broad-definition rules  
-Prompt: List all firewall rules that allow traffic from any source to any destination on any port. Highlight rules that are disabled or unused.
+### Risky Rule Discovery
+“Show all rules that allow any-to-any traffic. Highlight unused or disabled rules.”  
+*→ Surfaces misconfigurations and expands your visibility.*
 
-### Source → Destination Path Analysis  
-Prompt: Can you check in my policy if a host or network can access the internet?
+### Path Analysis for Access
+“Can host 10.1.2.7 access the internet under current policy?”  
+*→ Traces real access flows across Access, NAT, and interfaces.*
 
-### Recommendation for rulebase optimization  
-Prompt: Take a look at the internet-facing rules in my policy and suggest improvements. Identify any rules that should be strengthened or loosened. Consider both security risks and administrative overhead. In your recommendations, refer only to specific rules that can be changed or suggest adding new ones.
+### Rulebase Optimization with AI
+“Review internet-facing rules and suggest which should be tightened or removed.”  
+*→ Actionable insights that improve your security posture.*
 
-### Custom policy visualizations  
-Prompt: Please create a visual report that shows which services are allowed in my network, under which conditions, and which services are strictly blocked.
-
+### Visual Policy Mapping
+“Generate a report showing allowed and blocked services across my environment.”  
+*→ Delivers structured data for dashboards, reports, and audits.*
 ---
 
 ## Configuration Options
