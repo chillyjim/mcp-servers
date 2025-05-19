@@ -1,0 +1,36 @@
+{
+  "name": "@chkp/quantum-management-mcp",
+  "version": "1.0.16",
+  "bin": {
+    "quantum-management-mcp": "dist/index.js"
+  },
+  "description": "Official MCP server for Check Point Quantum Management",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "build:all": "npm run clean && npm run build"
+  },
+  "dependencies": {
+    "@chkp/quantum-infra": "*",
+    "@modelcontextprotocol/sdk": "^1.11.1",
+    "body-parser": "^1.20.2",
+    "commander": "^13.1.0",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/commander": "^2.12.0",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.15.11",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4",
+    "zod": "^3.24.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
