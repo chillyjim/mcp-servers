@@ -4,9 +4,11 @@ import https from 'https';
 
 function getMainPackageUserAgent(): string {
   if (process.env.CP_MCP_MAIN_PKG) {
-    return process.env.CP_MCP_MAIN_PKG;
+      if (process.env.CP_MCP_MAIN_PKG.includes("quantum-management-mcp")) {
+      return "mgmt-mcp";
+    }
   }
-  return "Check Point MCP API Client/v1.0";
+  return "Check Point MCP API Client";
 }
 
 /**

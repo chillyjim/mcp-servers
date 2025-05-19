@@ -40,6 +40,7 @@ MCP changes this: exposing security management data in a modular, context-rich f
 ### Visual Policy Mapping
 “Generate a report showing allowed and blocked services across my environment.”  
 *→ Delivers structured data for dashboards, reports, and audits.*
+  
 ---
 
 ## Configuration Options
@@ -59,7 +60,7 @@ Set the following environment variables:
 
 - `API_KEY`: Your Smart-1 Cloud API key  
 - `S1C_URL`: Your Smart-1 Cloud tenant "Web-API" URL  
-
+  
 ---
 
 ### 2. On-Prem Management (API Key or Username/Password)
@@ -80,7 +81,7 @@ Set the following environment variables:
 - `API_KEY`: Your management API key (if using API key authentication)  
 - `USERNAME`: Username for authentication (if using username/password authentication)  
 - `PASSWORD`: Password for authentication (if using username/password authentication)  
-
+  
 ---
 
 ## Client Configuration
@@ -218,6 +219,7 @@ Add the configuration as Claude Desktop App.
 Enter Cursor settings and click on "MCP Servers" in the left menu.
 You should see the option to add a new MCP Server.
 Add the configuration as Claude Desktop App.
+  
 ---
 
 ## Development
