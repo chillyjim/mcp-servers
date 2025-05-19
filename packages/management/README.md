@@ -40,6 +40,7 @@ MCP changes this: exposing security management data in a modular, context-rich f
 ### Visual Policy Mapping
 “Generate a report showing allowed and blocked services across my environment.”  
 *→ Delivers structured data for dashboards, reports, and audits.*
+  
 ---
 
 ## Configuration Options
@@ -59,7 +60,7 @@ Set the following environment variables:
 
 - `API_KEY`: Your Smart-1 Cloud API key  
 - `S1C_URL`: Your Smart-1 Cloud tenant "Web-API" URL  
-
+  
 ---
 
 ### 2. On-Prem Management (API Key or Username/Password)
@@ -80,7 +81,7 @@ Set the following environment variables:
 - `API_KEY`: Your management API key (if using API key authentication)  
 - `USERNAME`: Username for authentication (if using username/password authentication)  
 - `PASSWORD`: Password for authentication (if using username/password authentication)  
-
+  
 ---
 
 ## Client Configuration
@@ -110,7 +111,7 @@ It is expected to work with any MCP client that supports the Model Context Proto
   "mcpServers": {
     "quantum-management": {
       "command": "npx",
-      "args": ["@chkp/quantum_management_mcp"],
+      "args": ["@chkp/quantum-management-mcp"],
       "env": {
         "API_KEY": "YOUR_API_KEY",
         "S1C_URL": "YOUR_S1C_URL" // e.g., https://xxxxxxxx.maas.checkpoint.com/yyyyyyy/web_api
@@ -127,7 +128,7 @@ It is expected to work with any MCP client that supports the Model Context Proto
   "mcpServers": {
     "quantum-management": {
       "command": "npx",
-      "args": ["@chkp/quantum_management_mcp"],
+      "args": ["@chkp/quantum-management-mcp"],
       "env": {
         "MANAGEMENT_HOST": "YOUR_MANAGEMENT_IP_OR_HOST_NAME",
         "MANAGEMENT_PORT": "443", // optional, default is 443
@@ -167,7 +168,7 @@ Add the server configuration:
   "mcpServers": {
     "quantum-management": {
       "command": "npx",
-      "args": ["@chkp/quantum_management_mcp"],
+      "args": ["@chkp/quantum-management-mcp"],
       "env": {
         // Add the configuration from the above instructions
       }
@@ -191,7 +192,7 @@ Add this configuration:
       "quantum-management": {
         "command": "npx",
         "args": [
-          "@chkp/quantum_management_mcp"
+          "@chkp/quantum-management-mcp"
         ],
         "env": {
           "MANAGEMENT_HOST": "YOUR_MANAGEMENT_IP_OR_HOST_NAME",
@@ -218,6 +219,7 @@ Add the configuration as Claude Desktop App.
 Enter Cursor settings and click on "MCP Servers" in the left menu.
 You should see the option to add a new MCP Server.
 Add the configuration as Claude Desktop App.
+  
 ---
 
 ## Development
