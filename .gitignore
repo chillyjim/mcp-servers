@@ -20,8 +20,6 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
-python_code/
-
 # TypeScript build info
 *.tsbuildinfo
 

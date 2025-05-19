@@ -3,8 +3,8 @@
 import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { callManagementApi } from '@chkp/quantum-infra';
-import { Settings } from '@chkp/quantum-infra';
+import { callManagementApi } from '@chkp/genai-mcp-server-infra';
+import { Settings } from '@chkp/genai-mcp-server-infra';
 import { Command } from 'commander';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
@@ -91,23 +91,6 @@ server.prompt(
 );
 
 
-
-// server.prompt(
-//   'gateway_topology_visualization_prompt',
-//   { gateway: z.string() },
-//   ({ gateway }) => ({
-//     messages: [
-//       {
-//         role: 'user',
-//         content: {
-//           type: 'text',
-//           text: TOPOLOGY_VISUALIZATION.replace('{GATEWAY_NAME}', gateway),
-//         },
-//       },
-//     ],
-//   })
-// );
-
 server.prompt(
   'source_to_destination_prompt',
   {
@@ -139,15 +122,26 @@ server.tool(
   'show_access_rulebase',
   'Show the access rulebase for a given name or uid. Either name or uid is required, the other can be empty.',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
+    name: z.string().optional(),
+    uid: z.string().optional(),
     package: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const pkg = typeof args.package === 'string' ? args.package : undefined;
-    const resp = await callManagementApi('POST', 'show-access-rulebase', { name, uid, package: pkg });
+    const params: Record<string, any> = {};
+    
+    if (typeof args.name === 'string' && args.name.trim() !== '') {
+      params.name = args.name;
+    }
+    
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') {
+      params.uid = args.uid;
+    }
+    
+    if (typeof args.package === 'string' && args.package.trim() !== '') {
+      params.package = args.package;
+    }
+    
+    const resp = await callManagementApi('POST', 'show-access-rulebase', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
 );
@@ -171,8 +165,9 @@ server.tool(
 
 server.tool(
   'show_access_rule',
-  'Show a specific rule in the access control layer.',
+  'Show a specific rule in the access control layer. Set requested rule by uid, name or rule-number (at least one is required). You must always specify the layer.',
   {
+      name: z.string().optional(),
     layer: z.string(),
     rule_number: z.number().optional(),
     uid: z.string().optional(),
@@ -181,37 +176,61 @@ server.tool(
     show_hits: z.boolean().optional().default(false),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const layer = typeof args.layer === 'string' ? args.layer : '';
-    const rule_number = typeof args.rule_number === 'number' ? args.rule_number : undefined;
-    const uid = typeof args.uid === 'string' ? args.uid : undefined;
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const show_as_ranges = typeof args.show_as_ranges === 'boolean' ? args.show_as_ranges : false;
-    const show_hits = typeof args.show_hits === 'boolean' ? args.show_hits : false;
-    const resp = await callManagementApi('POST', 'show-access-rule', {
-      layer,
-      rule_number,
-      uid,
-      details_level,
-      show_as_ranges,
-      show_hits,
-    });
+    const params: Record<string, any> = {};
+    
+    if (typeof args.name === 'string' && args.name.trim() !== '') {
+      params.name = args.name;
+    }
+    
+    if (typeof args.layer === 'string' && args.layer.trim() !== '') {
+      params.layer = args.layer;
+    }
+    
+    if (typeof args.rule_number === 'number') {
+      params.rule_number = args.rule_number;
+    }
+    
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') {
+      params.uid = args.uid;
+    }
+    
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') {
+      params.details_level = args.details_level;
+    }
+    
+    if (typeof args.show_as_ranges === 'boolean') {
+      params.show_as_ranges = args.show_as_ranges;
+    }
+    
+    if (typeof args.show_hits === 'boolean') {
+      params.show_hits = args.show_hits;
+    }
+    
+    const resp = await callManagementApi('POST', 'show-access-rule', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
 );
 
 server.tool(
   'show_access_layer',
-  'Show an access layer object by name or UID.',
+  'Show an access layer object by name or UID (at least one is required).',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
+    name: z.string().optional(),
+    uid: z.string().optional(),
     details_level: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const resp = await callManagementApi('POST', 'show-access-layer', { name, uid, details_level });
+    const params: Record<string, any> = {};
+    if (typeof args.name === 'string' && args.name.trim() !== '') {
+      params.name = args.name;
+    }
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') {
+      params.uid = args.uid;
+    }
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') {
+      params.details_level = args.details_level;
+    }
+    const resp = await callManagementApi('POST', 'show-access-layer', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
 );
@@ -220,7 +239,7 @@ server.tool(
   'show_access_layers',
   'Show all access layers, with optional filtering and detail level.',
   {
-    filter: z.string().optional().default(''),
+    filter: z.string().optional(),
     limit: z.number().optional(),
     offset: z.number().optional(),
     order: z.array(z.string()).optional(),
@@ -228,32 +247,24 @@ server.tool(
     domains_to_process: z.array(z.string()).optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const filter = typeof args.filter === 'string' ? args.filter : '';
-    const limit = typeof args.limit === 'number' ? args.limit : undefined;
-    const offset = typeof args.offset === 'number' ? args.offset : undefined;
-    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
-    const resp = await callManagementApi('POST', 'show-access-layers', {
-      filter,
-      limit,
-      offset,
-      order,
-      details_level,
-      domains_to_process,
-    });
+    const params: Record<string, any> = {};
+    if (typeof args.filter === 'string' && args.filter.trim() !== '') params.filter = args.filter;
+    if (typeof args.limit === 'number') params.limit = args.limit;
+    if (typeof args.offset === 'number') params.offset = args.offset;
+    if (Array.isArray(args.order) && args.order.length > 0) params.order = args.order;
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') params.details_level = args.details_level;
+    if (Array.isArray(args.domains_to_process) && args.domains_to_process.length > 0) params.domains_to_process = args.domains_to_process;
+    const resp = await callManagementApi('POST', 'show-access-layers', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
 );
 
 server.tool(
   'show_nat_rulebase',
-  'Show the NAT rulebase for a given name or uid. Either name or uid is required, the other can be empty.',
+  'Show the NAT rulebase of a given package.',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
-    package: z.string().optional(),
-    filter: z.string().optional().default(''),
+    package: z.string(),
+    filter: z.string().optional(),
     limit: z.number().optional(),
     offset: z.number().optional(),
     order: z.array(z.string()).optional(),
@@ -262,88 +273,78 @@ server.tool(
     show_membership: z.boolean().optional().default(false),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const pkg = typeof args.package === 'string' ? args.package : undefined;
-    const filter = typeof args.filter === 'string' ? args.filter : '';
-    const limit = typeof args.limit === 'number' ? args.limit : undefined;
-    const offset = typeof args.offset === 'number' ? args.offset : undefined;
-    const order = Array.isArray(args.order) ? args.order as string[] : undefined;
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const dereference_group_members = typeof args.dereference_group_members === 'boolean' ? args.dereference_group_members : false;
-    const show_membership = typeof args.show_membership === 'boolean' ? args.show_membership : false;
-    const resp = await callManagementApi('POST', 'show-nat-rulebase', {
-      name,
-      uid,
-      package: pkg,
-      filter,
-      limit,
-      offset,
-      order,
-      details_level,
-      dereference_group_members,
-      show_membership,
-    });
+    const params: Record<string, any> = {};
+    if (typeof args.package === 'string' && args.package.trim() !== '') params.package = args.package;
+    if (typeof args.filter === 'string' && args.filter.trim() !== '') params.filter = args.filter;
+    if (typeof args.limit === 'number') params.limit = args.limit;
+    if (typeof args.offset === 'number') params.offset = args.offset;
+    if (Array.isArray(args.order) && args.order.length > 0) params.order = args.order;
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') params.details_level = args.details_level;
+    if (typeof args.dereference_group_members === 'boolean') params.dereference_group_members = args.dereference_group_members;
+    if (typeof args.show_membership === 'boolean') params.show_membership = args.show_membership;
+    const resp = await callManagementApi('POST', 'show-nat-rulebase', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
 );
 
 server.tool(
   'show_access_section',
-  'Show an access section by name or UID and layer.',
+  'Show an access section by name, UID or layer (at least one is required).',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
-    layer: z.string().optional().default(''),
+    name: z.string().optional(),
+    uid: z.string().optional(),
+    layer: z.string().optional(),
     details_level: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const layer = typeof args.layer === 'string' ? args.layer : '';
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const resp = await callManagementApi('POST', 'show-access-section', { name, uid, layer, details_level });
+    const params: Record<string, any> = {};
+    if (typeof args.name === 'string' && args.name.trim() !== '') params.name = args.name;
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') params.uid = args.uid;
+    if (typeof args.layer === 'string' && args.layer.trim() !== '') params.layer = args.layer;
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') params.details_level = args.details_level;
+    const resp = await callManagementApi('POST', 'show-access-section', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
 );
 
 server.tool(
   'show_nat_section',
-  'Show a NAT section by name or UID and layer.',
+  'Show a NAT section by name or UID and layer (at least one is required). You must always specify the package.',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
-    layer: z.string().optional().default(''),
-    package: z.string().optional(),
+    name: z.string().optional(),
+    uid: z.string().optional(),
+    layer: z.string().optional(),
+    package: z.string(),
     details_level: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const layer = typeof args.layer === 'string' ? args.layer : '';
-    const pkg = typeof args.package === 'string' ? args.package : undefined;
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const resp = await callManagementApi('POST', 'show-nat-section', { name, uid, layer, package: pkg, details_level });
+    const params: Record<string, any> = {};
+    if (typeof args.name === 'string' && args.name.trim() !== '') params.name = args.name;
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') params.uid = args.uid;
+    if (typeof args.layer === 'string' && args.layer.trim() !== '') params.layer = args.layer;
+    if (typeof args.package === 'string' && args.package.trim() !== '') params.package = args.package;
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') params.details_level = args.details_level;
+    const resp = await callManagementApi('POST', 'show-nat-section', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
 );
-
 
 // --- VPN Community and Gateway/Cluster/LSM Tools ---
 
 server.tool(
   'show_vpn_community_star',
-  'Show a VPN Community Star object by name or UID.',
+  'Show a VPN Community Star object by name or UID (at least one is required).',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
+    name: z.string().optional(),
+    uid: z.string().optional(),
     details_level: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const resp = await callManagementApi('POST', 'show-vpn-community-star', { name, uid, details_level });
+    const params: Record<string, any> = {};
+    if (typeof args.name === 'string' && args.name.trim() !== '') params.name = args.name;
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') params.uid = args.uid;
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') params.details_level = args.details_level;
+    const resp = await callManagementApi('POST', 'show-vpn-community-star', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
 );
@@ -352,7 +353,7 @@ server.tool(
   'show_vpn_communities_star',
   'Show all VPN Community Star objects, with optional filtering and detail level.',
   {
-    filter: z.string().optional().default(''),
+    filter: z.string().optional(),
     limit: z.number().optional(),
     offset: z.number().optional(),
     order: z.array(z.string()).optional(),
@@ -380,17 +381,18 @@ server.tool(
 
 server.tool(
   'show_vpn_community_meshed',
-  'Show a VPN Community Meshed object by name or UID.',
+  'Show a VPN Community Meshed object by name or UID (at least one is required).',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
+    name: z.string().optional(),
+    uid: z.string().optional(),
     details_level: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const resp = await callManagementApi('POST', 'show-vpn-community-meshed', { name, uid, details_level });
+    const params: Record<string, any> = {};
+    if (typeof args.name === 'string' && args.name.trim() !== '') params.name = args.name;
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') params.uid = args.uid;
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') params.details_level = args.details_level;
+    const resp = await callManagementApi('POST', 'show-vpn-community-meshed', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
 );
@@ -399,7 +401,7 @@ server.tool(
   'show_vpn_communities_meshed',
   'Show all VPN Community Meshed objects, with optional filtering and detail level.',
   {
-    filter: z.string().optional().default(''),
+    filter: z.string().optional(),
     limit: z.number().optional(),
     offset: z.number().optional(),
     order: z.array(z.string()).optional(),
@@ -427,15 +429,18 @@ server.tool(
 
 server.tool(
   'show_vpn_community_remote_access',
-  'Show a VPN Community Remote Access object by UID (or default if not specified).',
+  'Show a VPN Community Remote Access object by name or UID (at least one is required).',
   {
-    uid: z.string().optional().default(''),
-    details_level: z.string().optional(),
+      uid: z.string().optional(),
+      name: z.string().optional(),
+      details_level: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const resp = await callManagementApi('POST', 'show-vpn-community-remote-access', { uid, details_level });
+    const params: Record<string, any> = {};
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') params.uid = args.uid;
+    if (typeof args.name === 'string' && args.name.trim() !== '') params.name = args.name;
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') params.details_level = args.details_level;
+    const resp = await callManagementApi('POST', 'show-vpn-community-remote-access', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
 );
@@ -444,7 +449,7 @@ server.tool(
   'show_vpn_communities_remote_access',
   'Show all VPN Community Remote Access objects, with optional filtering and detail level.',
   {
-    filter: z.string().optional().default(''),
+    filter: z.string().optional(),
     limit: z.number().optional(),
     offset: z.number().optional(),
     order: z.array(z.string()).optional(),
@@ -472,9 +477,9 @@ server.tool(
 
 server.tool(
   'show_gateways_and_servers',
-  'Retrieve multiple gateway and server objects with optional filtering and pagination.',
+  'Retrieve multiple gateway and server objects with optional filtering and pagination. Use this to get the currently installed policies only gateways.',
   {
-    filter: z.string().optional().default(''),
+    filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
     order: z.array(z.string()).optional(),
@@ -500,20 +505,17 @@ server.tool(
 
 server.tool(
   'show_simple_gateway',
-  'Retrieve a simple gateway object by name or UID.',
+  'Retrieve a simple gateway object by name or UID. (at least one is required).',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
+    name: z.string().optional(),
+    uid: z.string().optional(),
     details_level: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
     const params: Record<string, any> = {};
-    if (name) params.name = name;
-    if (uid) params.uid = uid;
-    if (details_level) params['details-level'] = details_level;
+    if (typeof args.name === 'string' && args.name.trim() !== '') params.name = args.name;
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') params.uid = args.uid;
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') params['details-level'] = args.details_level;
     const resp = await callManagementApi('POST', 'show-simple-gateway', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
@@ -523,7 +525,7 @@ server.tool(
   'show_simple_gateways',
   'Retrieve multiple simple gateway objects with optional filtering and pagination.',
   {
-    filter: z.string().optional().default(''),
+    filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
     order: z.array(z.string()).optional(),
@@ -553,7 +555,7 @@ server.tool(
   'show_lsm_clusters',
   'Retrieve multiple LSM cluster objects with optional filtering and pagination.',
   {
-    filter: z.string().optional().default(''),
+    filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
     order: z.array(z.string()).optional(),
@@ -579,18 +581,15 @@ server.tool(
 
 server.tool(
   'show_cluster_member',
-  'Retrieve a cluster member object by name or UID.',
+  'Retrieve a cluster member object by or UID',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
+    uid: z.string().optional(),
     details_level: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
     const uid = typeof args.uid === 'string' ? args.uid : '';
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
     const params: Record<string, any> = {};
-    if (name) params.name = name;
     if (uid) params.uid = uid;
     if (details_level) params['details-level'] = details_level;
     const resp = await callManagementApi('POST', 'show-cluster-member', params);
@@ -602,7 +601,7 @@ server.tool(
   'show_cluster_members',
   'Retrieve multiple cluster member objects with optional filtering and pagination.',
   {
-    filter: z.string().optional().default(''),
+    filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
     order: z.array(z.string()).optional(),
@@ -628,20 +627,17 @@ server.tool(
 
 server.tool(
   'show_lsm_gateway',
-  'Retrieve an LSM gateway object by name or UID.',
+  'Retrieve an LSM gateway object by name or UID. (at least one is required).',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
+    name: z.string().optional(),
+    uid: z.string().optional(),
     details_level: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
     const params: Record<string, any> = {};
-    if (name) params.name = name;
-    if (uid) params.uid = uid;
-    if (details_level) params['details-level'] = details_level;
+    if (typeof args.name === 'string' && args.name.trim() !== '') params.name = args.name;
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') params.uid = args.uid;
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') params['details-level'] = args.details_level;
     const resp = await callManagementApi('POST', 'show-lsm-gateway', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
@@ -651,7 +647,7 @@ server.tool(
   'show_simple_clusters',
   'Retrieve multiple simple cluster objects with optional filtering and pagination.',
   {
-    filter: z.string().optional().default(''),
+    filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
     order: z.array(z.string()).optional(),
@@ -677,20 +673,17 @@ server.tool(
 
 server.tool(
   'show_simple_cluster',
-  'Retrieve a simple cluster object by name or UID.',
+  'Retrieve a simple cluster object by name or UID (at least one is required).',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
+    name: z.string().optional(),
+    uid: z.string().optional(),
     details_level: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
     const params: Record<string, any> = {};
-    if (name) params.name = name;
-    if (uid) params.uid = uid;
-    if (details_level) params['details-level'] = details_level;
+    if (typeof args.name === 'string' && args.name.trim() !== '') params.name = args.name;
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') params.uid = args.uid;
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') params['details-level'] = args.details_level;
     const resp = await callManagementApi('POST', 'show-simple-cluster', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
@@ -700,7 +693,7 @@ server.tool(
   'show_lsm_gateways',
   'Retrieve multiple LSM gateway objects with optional filtering and pagination.',
   {
-    filter: z.string().optional().default(''),
+    filter: z.string().optional(),
     limit: z.number().optional().default(50),
     offset: z.number().optional().default(0),
     order: z.array(z.string()).optional(),
@@ -726,20 +719,17 @@ server.tool(
 
 server.tool(
   'show_lsm_cluster',
-  'Retrieve an LSM cluster object by name or UID.',
+  'Retrieve an LSM cluster object by name or UID (at least one is required).',
   {
-    name: z.string().optional().default(''),
-    uid: z.string().optional().default(''),
+    name: z.string().optional(),
+    uid: z.string().optional(),
     details_level: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : '';
-    const uid = typeof args.uid === 'string' ? args.uid : '';
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
     const params: Record<string, any> = {};
-    if (name) params.name = name;
-    if (uid) params.uid = uid;
-    if (details_level) params['details-level'] = details_level;
+    if (typeof args.name === 'string' && args.name.trim() !== '') params.name = args.name;
+    if (typeof args.uid === 'string' && args.uid.trim() !== '') params.uid = args.uid;
+    if (typeof args.details_level === 'string' && args.details_level.trim() !== '') params['details-level'] = args.details_level;
     const resp = await callManagementApi('POST', 'show-lsm-cluster', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
@@ -1290,27 +1280,33 @@ server.tool(
 
 server.tool(
   'show_objects',
-  'Retrieve multiple generic objects with optional filtering and pagination.',
+  'Retrieve multiple generic objects with filtering and pagination. Can use type (e.g host, service-tcp, network, address-range...) to get objects of a certain type.',
   {
-    filter: z.string().optional(),
-    limit: z.number().optional().default(50),
-    offset: z.number().optional().default(0),
-    order: z.array(z.string()).optional(),
-    details_level: z.string().optional(),
-    domains_to_process: z.array(z.string()).optional(),
+      uids: z.array(z.string()).optional(),
+      filter: z.string().optional(),
+      limit: z.number().optional().default(50),
+      offset: z.number().optional().default(0),
+      order: z.array(z.string()).optional(),
+      details_level: z.string().optional(),
+      domains_to_process: z.array(z.string()).optional(),
+      type: z.string().optional(),
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const filter = typeof args.filter === 'string' ? args.filter : '';
+    const uids = Array.isArray(args.uids) ? args.uids as string[] : undefined;
+      const filter = typeof args.filter === 'string' ? args.filter : '';
     const limit = typeof args.limit === 'number' ? args.limit : 50;
     const offset = typeof args.offset === 'number' ? args.offset : 0;
     const order = Array.isArray(args.order) ? args.order as string[] : undefined;
     const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
     const domains_to_process = Array.isArray(args.domains_to_process) ? args.domains_to_process as string[] : undefined;
+    const type = typeof args.type === 'string' ? args.type : undefined;
     const params: Record<string, any> = { limit, offset };
+    if ( uids ) params.uids = uids;
     if (filter) params.filter = filter;
     if (order) params.order = order;
     if (details_level) params['details-level'] = details_level;
     if (domains_to_process) params['domains-to-process'] = domains_to_process;
+    if (type) params.type = type;
     const resp = await callManagementApi('POST', 'show-objects', params);
     return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
@@ -1319,33 +1315,24 @@ server.tool(
 // Tool: show_object
 server.tool(
   'show_object',
-  'Retrieve a generic object by name or UID.',
+  'Retrieve a generic object by UID.',
   {
-    name: z.string().optional(),
-    uid: z.string().optional(),
-    details_level: z.string().optional(),
+    uid: z.string()
   },
   async (args: Record<string, unknown>, extra: any) => {
-    const name = typeof args.name === 'string' ? args.name : undefined;
-    const uid = typeof args.uid === 'string' ? args.uid : undefined;
-    const details_level = typeof args.details_level === 'string' ? args.details_level : undefined;
-    const params: Record<string, any> = {};
-    if (name) params.name = name;
-    if (uid) params.uid = uid;
-    if (details_level) params['details-level'] = details_level;
-    const resp = await callManagementApi('POST', 'show-object', params);
-    return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
+      const uid = args.uid as string;
+      const params: Record<string, any> = {}
+      params.uid = uid
+      params.details_level = 'full'
+      const resp = await callManagementApi('POST', 'show-object', params);
+      return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] };
   }
 );
 
+
+
 export { server };
 
-// Access entrypoint
-// import path from 'path';
-// import { fileURLToPath } from 'url';
-//
-// const isMain = fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
-// if (isMain) {
 const main = async () => {
 const program = new Command();
 program
