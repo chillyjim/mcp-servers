@@ -5,6 +5,9 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
@@ -20,7 +23,7 @@ jobs:
           VERSION="${GITHUB_REF_NAME#v}"
           npm version "$VERSION"
           npm run build
-          npm publish --access public
+          npm publish --access public --provenance
         env:
           GITHUB_REF_NAME: ${{ github.ref_name }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -32,7 +35,7 @@ jobs:
           VERSION="${GITHUB_REF_NAME#v}"
           npm version "$VERSION"
           npm run build
-          npm publish --access public
+          npm publish --access public --provenance
         env:
           GITHUB_REF_NAME: ${{ github.ref_name }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
