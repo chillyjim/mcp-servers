@@ -54,7 +54,7 @@ Authenticate to Check Point Smart-1 Cloud using an API key.
 - **How to generate an API key:**  
   In your Smart-1 Cloud dashboard, go to **Settings → API & SmartConsole** and generate an API key.  
   Copy the key and the server login URL (excluding the `/login` suffix) to your client settings.  
-  ![alt text](./resources/s1c_api_key.png)
+  ![alt text](./../../resources/s1c_api_key.png)
 
 Set the following environment variables:
 
@@ -92,8 +92,8 @@ Download and install the latest version of [Node.js](https://nodejs.org/en/downl
 You can check your installed version by running:
 
 ```bash
-node -v      # Should print "v22" or higher
-nvm current  # Should print "v22" or higher
+node -v      # Should print "v18" or higher
+nvm current  # Should print "v18" or higher
 ```
 
 ### Supported Clients
@@ -226,7 +226,7 @@ Add the configuration as Claude Desktop App.
 
 ### Prerequisites
 
-- Node.js 22+  
+- Node.js 18+  
 - npm 10+  
 
 ### Setup

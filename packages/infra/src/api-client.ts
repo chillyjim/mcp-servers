@@ -4,7 +4,7 @@ import https from 'https';
 
 function getMainPackageUserAgent(): string {
   if (process.env.CP_MCP_MAIN_PKG) {
-      if (process.env.CP_MCP_MAIN_PKG.includes("quantum-management-mcp")) {
+    if (process.env.CP_MCP_MAIN_PKG.includes("quantum-management-mcp")) {
       return "mgmt-mcp";
     }
   }
@@ -41,6 +41,13 @@ export abstract class APIClientBase {
   }
 
   /**
+   * Reset the singleton instance (useful for testing)
+   */
+  static resetInstance(): void {
+    APIClientBase._instance = null as unknown as APIClientBase;
+  }
+
+  /**
    * Get the host URL for the API client
    */
   abstract getHost(): string;
@@ -55,11 +62,17 @@ export abstract class APIClientBase {
    * Get headers for the API requests
    */
   protected getHeaders(): Record<string, string> {
-    return {
-      "Content-Type": "application/json", 
-      "X-chkp-sid": this.sid || "",
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
       "User-Agent": getMainPackageUserAgent(),
     };
+    
+    // Only add the X-chkp-sid header if we have a valid session ID
+    if (this.sid) {
+      headers["X-chkp-sid"] = this.sid;
+    }
+    
+    return headers;
   }
 
   /**
@@ -73,16 +86,36 @@ export abstract class APIClientBase {
   ): Promise<ClientResponse> {
 
     if (!this.sid || this.isSessionExpired()) {
-      this.sid = await this.login();
+      try {
+        this.sid = await this.login();
+      }
+      catch (error: any) {
+        // If the error is already a ClientResponse, just return it directly
+        if (error instanceof ClientResponse) {
+          console.error(`Login failed with status ${error.status}:`, error.response);
+          return error;
+        }
+        // For other types of errors, create a generic response
+        console.error("Login failed with unexpected error:", error);
+        return new ClientResponse(500, { error: "Authentication failed", message: error.message });
+      }
     }
 
+    let httpsAgent;
+    if (this instanceof OnPremAPIClient) {
+      // Allow self-signed certs for on-prem management servers
+      httpsAgent = new https.Agent({ rejectUnauthorized: false });
+    }
+
+
     return await APIClientBase.makeRequest(
-      this.getHost(),
-      method,
-      uri,
-      data,
-      this.getHeaders(),
-      params
+        this.getHost(),
+        method,
+        uri,
+        data,
+        this.getHeaders(),
+        params,
+        httpsAgent
     );
   }
 
@@ -107,6 +140,9 @@ export abstract class APIClientBase {
       { "api-key": this.apiKey },
       { "Content-Type": "application/json" }
     );
+    if (loginResp.status !== 200 || !loginResp.response || !loginResp.response.sid) {
+      throw loginResp;
+    }
 
     this.sessionTimeout = loginResp.response["session-timeout"] || null;
     this.sessionStart = Date.now();
@@ -206,36 +242,9 @@ export class OnPremAPIClient extends APIClientBase {
     const port = this.managementPort;
     return `https://${managementHost}:${port}/web_api`;
   }
-  
-  /**
-   * Override callApi to allow self-signed certificates for on-prem only
-   */
-  async callApi(
-    method: string,
-    uri: string,
-    data: Record<string, any>,
-    params?: Record<string, any>
-  ): Promise<ClientResponse> {
-    if (!this.sid || this.isSessionExpired()) {
-      this.sid = await this.login();
-    }
-    
-    // Allow self-signed certs for on-prem management servers
-    const httpsAgent = new https.Agent({ rejectUnauthorized: false });
-    
-    // Pass the httpsAgent to makeRequest
-    return await APIClientBase.makeRequest(
-      this.getHost(),
-      method,
-      uri,
-      data,
-      this.getHeaders(),
-      params,
-      httpsAgent
-    );
-  }
+
     /**
-   * Override loginWithApiKey to support both api-key and username/password authentication
+   * Override login() to support both api-key and username/password authentication
    * and allow self-signed certificates
    */
   async login(): Promise<string> {
@@ -244,7 +253,11 @@ export class OnPremAPIClient extends APIClientBase {
     const isUsingCredentials = !!(this.username && this.password);
     
     if (!isUsingApiKey && !isUsingCredentials) {
-      throw new Error("Authentication failed: No API key or username/password provided");
+      // Create and throw a ClientResponse directly for credential errors
+      throw new ClientResponse(
+        401, 
+        { message: "Authentication failed: No API key or username/password provided" }
+      );
     }
 
     // Allow self-signed certs for on-prem management servers
@@ -264,6 +277,10 @@ export class OnPremAPIClient extends APIClientBase {
       null,
       httpsAgent
     );
+
+    if (loginResp.status !== 200 || !loginResp.response || !loginResp.response.sid) {
+      throw loginResp;
+    }
 
     this.sessionTimeout = loginResp.response["session-timeout"] || null;
     this.sessionStart = Date.now();
