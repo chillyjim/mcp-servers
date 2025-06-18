@@ -1,37 +1,37 @@
-name: Publish Packages to npmjs
+name: Release
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
 jobs:
-  build-and-publish:
+  release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
+      packages: write
       id-token: write
+      pull-requests: write  # Needed to create PRs
     steps:
       - uses: actions/checkout@v4
-
+        with:
+          fetch-depth: 0
+          
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '18'
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build all packages
-        run: npm run build --workspaces
-
-      - name: Configure npm for provenance
-        run: |
-          npm config set provenance true
-          npm config set access public
-
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
+          
+      - run: npm ci
+      
+      - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
         with:
+          # This script runs ONLY when publishing (Phase 2)
           publish: npm run release
+          # This script runs ONLY when creating version PR (Phase 1)
+          version: npm run version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
