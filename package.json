@@ -16,7 +16,9 @@
     "build:all": "npm run clean && tsc --build",
     "build-debug": "tsc -p tsconfig.debug.json",
     "debug-api": "node dev-scripts/debug-api.js",
-    "debug-harmony": "node dev-scripts/debug-harmony.js"
+    "debug-harmony": "node dev-scripts/debug-harmony.js",
+    "release": "changeset publish",
+    "version": "changeset version"
   },
   "keywords": [
     "mcp",
