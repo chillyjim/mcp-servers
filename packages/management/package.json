@@ -5,6 +5,11 @@
     "quantum-management-mcp": "dist/index.js"
   },
   "description": "Official MCP server for Check Point Quantum Management",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CheckPointSW/mcp-servers.git",
+    "directory": "packages/management"
+  },
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
