@@ -2,6 +2,11 @@
   "name": "@chkp/quantum-infra",
   "version": "0.1.0",
   "description": "Shared infrastructure for Check Point Quantum Management MCP servers",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CheckPointSW/mcp-servers.git",
+    "directory": "packages/infra"
+  },
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
