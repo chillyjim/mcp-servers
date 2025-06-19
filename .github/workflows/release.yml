@@ -29,6 +29,7 @@ jobs:
         with:
           # This script runs ONLY when publishing (Phase 2)
           publish: npm run release
+          createGithubReleases: true
           # This script runs ONLY when creating version PR (Phase 1)
           version: npm run version
         env:
