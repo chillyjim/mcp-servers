@@ -1,0 +1,30 @@
+{
+  "name": "@chkp/management-logs-mcp",
+  "version": "0.0.15",
+  "description": "Management Logs MCP server for Check Point products",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "management-logs-mcp": "./dist/index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "build:all": "npm run clean && npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.11.1",
+    "commander": "^11.0.0",
+    "zod": "^3.22.4",
+    "@chkp/quantum-infra": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "typescript": "^5.0.4"
+  }
+}
