@@ -61,7 +61,7 @@ export abstract class APIManagerBase {
     maxRetries: number = 5
   ): Promise<[boolean, string]> {
     let retries = 0;
-    
+    const timeouts = [1000, 1000, 2000, 5000, 5000]; // Retry intervals in milliseconds
     while (retries < maxRetries) {
       const payload = {
         'task-id': taskId,
@@ -81,8 +81,10 @@ export abstract class APIManagerBase {
         }
         return [false, "failed to get task result"];
       } else {
+        const timeout = timeouts[Math.min(retries, timeouts.length - 1)];
+        console.error(`Try #${retries}: Task ${taskId} is still running, waiting for ${timeout}ms...`);
         retries++;
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second between checks
+        await new Promise(resolve => setTimeout(resolve, timeout)); // Wait for the calculated timeout
       }
     }
     

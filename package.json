@@ -1,6 +1,6 @@
 {
   "name": "@chkp/mcp-servers-root",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Monorepo for Check Point MCP servers",
   "private": true,
   "type": "module",
@@ -16,9 +16,7 @@
     "build:all": "npm run clean && tsc --build",
     "build-debug": "tsc -p tsconfig.debug.json",
     "debug-api": "node dev-scripts/debug-api.js",
-    "debug-harmony": "node dev-scripts/debug-harmony.js",
-    "release": "changeset publish",
-    "version": "changeset version"
+    "debug-harmony": "node dev-scripts/debug-harmony.js"
   },
   "keywords": [
     "mcp",
