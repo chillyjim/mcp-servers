@@ -28,7 +28,7 @@ jobs:
         uses: changesets/action@v1
         with:
           # This script runs ONLY when publishing (Phase 2)
-          publish: npm run release
+          publish: npm run build:all && npm run release
           createGithubReleases: true
           # This script runs ONLY when creating version PR (Phase 1)
           version: npm run version
