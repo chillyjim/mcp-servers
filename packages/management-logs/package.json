@@ -8,6 +8,11 @@
   "bin": {
     "management-logs-mcp": "./dist/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CheckPointSW/mcp-servers.git",
+    "directory": "packages/management-logs"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
