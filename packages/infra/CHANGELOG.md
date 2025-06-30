@@ -1,5 +1,11 @@
 # @chkp/quantum-infra
 
+## 0.2.1
+
+### Patch Changes
+
+- 582cc25: Republish to fix missing dist folder in previous release. No code changes.
+
 ## 0.2.0
 
 ### Minor Changes
