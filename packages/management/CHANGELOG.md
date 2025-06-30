@@ -1,5 +1,13 @@
 # @chkp/quantum-management-mcp
 
+## 0.1.1
+
+### Patch Changes
+
+- 582cc25: Republish to fix missing dist folder in previous release. No code changes.
+- Updated dependencies [582cc25]
+  - @chkp/quantum-infra@0.2.1
+
 ## 0.0.2
 
 ### Patch Changes
