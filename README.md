@@ -20,6 +20,8 @@ This monorepo is organized with each Check Point security domain as a separate M
   - **`/management`** - Management API MCP server for policy and object management
   - **`/infra`** - Shared infrastructure components and utilities
   - **`/management-logs`** - Management Logs MCP server for Check Point products
+  - **`/threat-prevention`** - Management API MCP Server for Threat Prevention policies
+  - **`/https-inspection`** - Management API MCP Server for Https Inspection policies
 
 ## Available MCP Servers
 
@@ -29,6 +31,8 @@ The following MCP servers are available in this repository:
 |------------|--------------|-------------|
 | [Management](./packages/management/) | `@chkp/quantum-management-mcp` | Query policies, rules, objects, and network topology |
 | [Management-logs](./packages/management-logs/) | `@chkp/management-logs-mcp` | Make queries and gain insights from connection and audit logs |
+| [Threat-Prevention](./packages/threat-prevention/) | `@chkp/threat-prevention-mcp` | Query Theat Prevention policies, profiles and indicators, view IPS updates and IOC feeds |
+| [HTTPS-Inspection](./packages/https-inspection/) | `@chkp/https-inspection-mcp` | Query Https Inspection policies, rules and exceptions |
 
 
 ## Example: Setting Up an MCP Server
