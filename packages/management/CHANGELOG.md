@@ -4,6 +4,12 @@
 
 ### Patch Changes
 
+- d0e704c: Updated configuration, Modified 1 file(s) (synced from internal repository)
+
+## 0.1.1
+
+### Patch Changes
+
 - 582cc25: Republish to fix missing dist folder in previous release. No code changes.
 - Updated dependencies [582cc25]
   - @chkp/quantum-infra@0.2.1

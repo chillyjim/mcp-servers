@@ -4,6 +4,12 @@
 
 ### Patch Changes
 
+- d0e704c: Updated configuration, Modified 1 file(s) (synced from internal repository)
+
+## 0.1.1
+
+### Patch Changes
+
 - 69a010c: Updated configuration, Modified 1 file(s) (synced from internal repository)
 
 ## 0.1.0
