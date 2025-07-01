@@ -1,6 +1,6 @@
 {
   "name": "@chkp/quantum-management-mcp",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "bin": {
     "quantum-management-mcp": "dist/index.js"
   },
@@ -10,6 +10,7 @@
     "url": "https://github.com/CheckPointSW/mcp-servers.git",
     "directory": "packages/management"
   },
+  "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -39,6 +40,5 @@
     "node": ">=18.0.0"
   },
   "keywords": [],
-  "author": "",
-  "license": "MIT"
+  "author": ""
 }

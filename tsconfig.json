@@ -15,7 +15,9 @@
   "references": [
     { "path": "./packages/infra" },
     { "path": "./packages/management" },
-    { "path": "./packages/management-logs" }
+    { "path": "./packages/management-logs" },
+    { "path": "./packages/https-inspection" },
+    { "path": "./packages/threat-prevention" }
   ],
   "files": []
 }
