@@ -1,5 +1,11 @@
 # @chkp/management-logs-mcp
 
+## 0.1.2
+
+### Patch Changes
+
+- cf1473b: Republish with proper dist folder and fix version conflict.
+
 ## 0.1.1
 
 ### Patch Changes
