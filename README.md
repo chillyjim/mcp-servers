@@ -31,7 +31,7 @@ The following MCP servers are available in this repository:
 |------------|--------------|-------------|
 | [Management](./packages/management/) | `@chkp/quantum-management-mcp` | Query policies, rules, objects, and network topology |
 | [Management-logs](./packages/management-logs/) | `@chkp/management-logs-mcp` | Make queries and gain insights from connection and audit logs |
-| [Threat-Prevention](./packages/threat-prevention/) | `@chkp/threat-prevention-mcp` | Query Theat Prevention policies, profiles and indicators, view IPS updates and IOC feeds |
+| [Threat-Prevention](./packages/threat-prevention/) | `@chkp/threat-prevention-mcp` | Query Threat Prevention policies, profiles and indicators, view IPS updates and IOC feeds |
 | [HTTPS-Inspection](./packages/https-inspection/) | `@chkp/https-inspection-mcp` | Query Https Inspection policies, rules and exceptions |
 
 
