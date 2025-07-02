@@ -1,5 +1,13 @@
 # @chkp/management-logs-mcp
 
+## 0.1.3
+
+### Patch Changes
+
+- 4188f96: Updated configuration, Modified 1 file(s) (synced from internal repository)
+- Updated dependencies [4188f96]
+  - @chkp/quantum-infra@0.3.0
+
 ## 0.1.2
 
 ### Patch Changes
