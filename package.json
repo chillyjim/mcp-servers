@@ -18,7 +18,10 @@
     "debug-api": "node dev-scripts/debug-api.js",
     "debug-harmony": "node dev-scripts/debug-harmony.js",
     "release": "changeset publish",
-    "version": "changeset version"
+    "version": "changeset version",
+    "verify-shebangs": "node scripts-internal/utilities/verify-fix-shebangs.js",
+    "fix-shebangs": "node scripts-internal/utilities/verify-fix-shebangs.js --fix",
+    "prebuild:all": "npm run verify-shebangs"
   },
   "keywords": [
     "mcp",
