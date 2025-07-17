@@ -1,5 +1,11 @@
 # @chkp/quantum-infra
 
+## 0.5.0
+
+### Minor Changes
+
+- 49a9e23: Updated implementation and features, Updated configuration, Added 1 new file(s), Modified 2 file(s) (synced from internal repository)
+
 ## 0.3.0
 
 ### Minor Changes
