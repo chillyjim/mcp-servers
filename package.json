@@ -10,10 +10,12 @@
   "scripts": {
     "changeset": "changeset",
     "clean": "find ./packages -type d -name dist -exec rm -rf {} + && rm -rf ./dist && find . -name 'tsconfig.tsbuildinfo' -delete",
-    "build": "tsc --build",
+    "build": "tsc --build && npm run copy-server-configs",
     "dev": "npm run dev --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "build:all": "npm run clean && tsc --build",
+    "build:all": "npm run clean && npm run build",
+    "copy-server-configs": "find ./packages -type f -name 'server-config.json' -exec bash -c 'mkdir -p \"$(dirname \"${0%/src*}/dist\")\" && cp \"$0\" \"${0/src/dist}\"' {} \\;",
+    "build:dxt": "node scripts-internal/dxt/build-dxt.js",
     "build-debug": "tsc -p tsconfig.debug.json",
     "debug-api": "node dev-scripts/debug-api.js",
     "debug-harmony": "node dev-scripts/debug-harmony.js",
@@ -21,7 +23,12 @@
     "version": "changeset version",
     "verify-shebangs": "node scripts-internal/utilities/verify-fix-shebangs.js",
     "fix-shebangs": "node scripts-internal/utilities/verify-fix-shebangs.js --fix",
-    "prebuild:all": "test -f scripts-internal/utilities/verify-fix-shebangs.js && npm run verify-shebangs || echo 'Shebang verification skipped - script not available'"
+    "prebuild:all": "test -f scripts-internal/utilities/verify-fix-shebangs.js && npm run verify-shebangs || echo 'Shebang verification skipped - script not available'",
+    "sync-versions": "node scripts-internal/version-management/sync-public-versions.js",
+    "sync-versions:dry-run": "node scripts-internal/version-management/sync-public-versions.js --dry-run",
+    "package:add": "node scripts-internal/utilities/promote-package.js add",
+    "package:remove": "node scripts-internal/utilities/promote-package.js remove",
+    "package:status": "node scripts-internal/utilities/promote-package.js status"
   },
   "keywords": [
     "mcp",
@@ -41,8 +48,11 @@
     "@types/body-parser": "^1.19.2",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.14",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^18.15.11",
+    "esbuild": "^0.25.5",
     "jest": "^29.7.0",
+    "js-yaml": "^4.1.0",
     "ts-jest": "^29.3.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"

@@ -111,4 +111,23 @@ export class Settings {
       verbose: args.verbose
     });
   }
+  
+  /**
+   * Create settings from HTTP headers
+   * Maps headers to environment variable format based on server config
+   */
+  static fromHeaders(headers: Record<string, string | string[]>): Settings {
+    // Using upper-cased header keys to match our environment var naming convention
+    console.error('Creating settings from headers:', headers);
+    return new Settings({
+      apiKey: typeof headers.API_KEY === 'string' ? headers.API_KEY : undefined,
+      username: typeof headers.USERNAME === 'string' ? headers.USERNAME : undefined,
+      password: typeof headers.PASSWORD === 'string' ? headers.PASSWORD : undefined,
+      s1cUrl: typeof headers.S1C_URL === 'string' ? headers.S1C_URL : undefined,
+      managementHost: typeof headers.MANAGEMENT_HOST === 'string' ? headers.MANAGEMENT_HOST : undefined,
+      managementPort: typeof headers.MANAGEMENT_PORT === 'string' ? headers.MANAGEMENT_PORT : undefined,
+      origin: typeof headers.ORIGIN === 'string' ? headers.ORIGIN : undefined,
+      verbose: headers.VERBOSE === 'true'
+    });
+  }
 }
