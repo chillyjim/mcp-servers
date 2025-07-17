@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { Settings, callManagementApi } from '@chkp/quantum-infra';
-import { Command } from 'commander';
+import { launchMCPServer } from '@chkp/mcp-utils';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -641,23 +640,12 @@ server.tool(
 export { server };
 
 const main = async () => {
-const program = new Command();
-program
-  .option('--s1c-url <s1c url>', 'S1C URL')
-  .option('--api-key <key>', 'API key')
-  .option('--username <username>', 'Username for on-prem authentication', process.env.USERNAME)
-  .option('--password <password>', 'Password for on-prem authentication', process.env.PASSWORD)
-  .option('--management-host <host>', 'Management host (for on-prem)', process.env.MANAGEMENT_HOST)
-  .option('--management-port <port>', 'Port for on-prem API', process.env.MANAGEMENT_PORT || '443')
-  .option('--verbose', 'Enable verbose output', process.env.VERBOSE === 'true')
-  .option('--debug', 'Enable debug mode');
-program.parse(process.argv);
-const options = program.opts();
-Settings.setSettings(Settings.fromArgs(options));
-const transport = new StdioServerTransport();
-await server.connect(transport);
-console.error('Threat Prevention MCP server running on stdio. Version:', pkg.version);
+  await launchMCPServer(
+    join(dirname(fileURLToPath(import.meta.url)), 'server-config.json'),
+    { server, Settings, pkg }
+  );
 };
+
 main().catch((error) => {
   console.error('Fatal error in main():', error);
   process.exit(1);

@@ -1,11 +1,11 @@
 {
-  "name": "@chkp/quantum-infra",
-  "version": "0.4.0",
-  "description": "Shared infrastructure for Check Point Quantum Management MCP servers",
+  "name": "@chkp/mcp-utils",
+  "version": "0.2.0",
+  "description": "Shared utilities for Check Point MCP servers",
   "repository": {
     "type": "git",
     "url": "https://github.com/CheckPointSW/mcp-servers.git",
-    "directory": "packages/infra"
+    "directory": "packages/mcp-utils"
   },
   "license": "MIT",
   "type": "module",
@@ -15,23 +15,23 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "build:all": "npm run clean && npm run build",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "clean": "rm -rf dist && rm -f tsconfig.tsbuildinfo"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.11.1",
-    "axios": "^1.6.7",
-    "commander": "^11.1.0",
-    "zod": "^3.22.4"
+    "commander": "^13.1.0"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.14",
     "@types/node": "^18.15.11",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.3.4",
     "typescript": "^5.0.4"
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "utilities"
+  ],
+  "author": ""
 }

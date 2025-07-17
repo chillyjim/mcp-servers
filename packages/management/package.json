@@ -1,6 +1,6 @@
 {
   "name": "@chkp/quantum-management-mcp",
-  "version": "0.1.2",
+  "version": "0.2.1",
   "bin": {
     "quantum-management-mcp": "dist/index.js"
   },
@@ -15,12 +15,13 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && chmod +x ./dist/index.js",
+    "build": "tsc && chmod +x ./dist/index.js && cp src/server-config.json dist/",
     "dev": "tsc --watch",
     "start": "node dist/index.js",
     "build:all": "npm run clean && npm run build"
   },
   "dependencies": {
+    "@chkp/mcp-utils": "*",
     "@chkp/quantum-infra": "*",
     "@modelcontextprotocol/sdk": "^1.11.1",
     "body-parser": "^1.20.2",
